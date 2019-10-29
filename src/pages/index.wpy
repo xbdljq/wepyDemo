@@ -82,6 +82,8 @@
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: 'test'
+
+      
     }
     components = {
       panel: Panel,
