@@ -1,69 +1,114 @@
-<style lang="less">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-</style>
+<!--
+ * @Author: LiangJQ
+ * @Date: 2019-10-29 15:24:51
+ * @Description: 
+ -->
+
 
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
-
-
-export default class extends wepy.app {
-  config = {
-    pages: [
-      'pages/index'
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  export default class extends wepy.app {
+    config = {
+      //页面路由配置
+      pages: [         
+        'pages/Index', //主页
+        'pages/My', //我的
+        'pages/Service', //服务
+      ],
+      //分包页面路由配置
+      subPackages: [{
+          root: 'pages/product',
+          pages: [
+            'ProductList', // 商品列表
+            'ProductDetail' //商品详情
+          ]
+        },
+        {
+          root: 'pages/other',
+          pages: [
+            'Form', // 表单页
+            'echartPage' //echart
+          ]
+        },
+      ],
+      //全局的默认窗口表现
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: 'WeChat',
+        navigationBarTextStyle: 'black'
+      },
+      //底部 tab 栏的表现
+      tabBar: {
+        color: "#bbbbbb",
+        selectedColor: "#f78600",
+        borderStyle: "black",
+        backgroundColor: "#ffffff",
+        list: [{
+            pagePath: "pages/Index",
+            iconPath: "images/base/home.png",
+            selectedIconPath: "images/base/homes.png",
+            text: "首页"
+          },
+          {
+            pagePath: 'pages/Service',
+            iconPath: "images/base/service.png",
+            selectedIconPath: "images/base/services.png",
+            text: "服务"
+          },
+          {
+            pagePath: "pages/My",
+            iconPath: "images/base/user.png",
+            selectedIconPath: "images/base/users.png",
+            text: "我的"
+          }
+        ]
+      },
     }
-  }
-
-  globalData = {
-    userInfo: null
-  }
-
-  constructor () {
-    super()
-    this.use('requestfix')
-  }
-
-  onLaunch() {
-    this.testAsync()
-  }
-
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
-
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+    globalData = {
+      userInfo: null
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
+    constructor() {
+      super()
+      this.use('requestfix')
+    }
+    onLaunch() {
+      this.testAsync()
+    }
+    sleep(s) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('promise resolved')
+        }, s * 1000)
+      })
+    }
+    async testAsync() {
+      const data = await this.sleep(3)
+      console.log(data)
+    }
+    getUserInfo(cb) {
+      const that = this
+      if (this.globalData.userInfo) {
+        return this.globalData.userInfo
       }
-    })
+      wepy.getUserInfo({
+        success(res) {
+          that.globalData.userInfo = res.userInfo
+          cb && cb(res.userInfo)
+        }
+      })
+    }
   }
-}
 </script>
+
+<style lang="less">
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+</style>

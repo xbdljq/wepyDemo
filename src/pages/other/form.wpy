@@ -1,0 +1,50 @@
+<!--
+ * @Author: LiangJQ
+ * @Date: 2019-10-28 17:16:07
+ * @Description: 
+ -->
+<template>
+  <view class="container">
+ 我的
+   
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+
+  export default class My extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的'
+    }
+    components = {
+    }
+
+
+    data = {
+      mynum: 20,
+      
+    }
+
+    computed = {
+      now () {
+        return +new Date()
+      }
+    }
+
+    methods = {
+  
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="scss" scoped>
+
+</style>

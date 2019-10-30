@@ -1,0 +1,150 @@
+view,
+text,
+block,
+input,
+textarea,
+button,
+image,
+navigator,
+swiper,
+swiper-item,
+scroll-view {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+image {
+    vertical-align: middle;
+}
+
+button {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+}
+
+button::after {
+    border: 0;
+}
+
+
+/**清除浮动***/
+
+.g_clearfix::before,
+.g_clearfix::after {
+    content: "";
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+
+.g_clearfix {
+    zoom: 1;
+}
+
+.g_clear {
+    clear: both;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+
+/** 全局文字颜色 */
+
+.g_blue {
+    color: #3a9cff;
+}
+
+.g_orange {
+    color: #fa5900;
+}
+
+
+/** 全局按钮样式 */
+
+.g_btn {
+    width: 60%;
+    height: 80rpx;
+    margin: 0 auto;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    color: white;
+    text-align: center;
+    border-radius: 10rpx;
+    background: -webkit-linear-gradient(left, #fdd73a, #fab033);
+    background: -o-linear-gradient(right, #fdd73a, #fab033);
+    background: -moz-linear-gradient(right, #fdd73a, #fab033);
+    background: linear-gradient(to right, #fdd73a, #fab033);
+}
+
+.g_full_btn {
+    width: 100%;
+}
+
+
+/** 全局弹窗遮幕 */
+
+.g_modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    z-index: 10;
+}
+
+.g_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+
+/**flex弹性盒子***/
+
+.g_display_flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    .g_flex_1 {
+        width: 0;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+}
+
+
+/*侧轴对齐*/
+
+.g_align-items_center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+
+/*主轴对齐*/
+
+.g_justify-content_flex-center {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.g_hid {
+    display: none;
+}
