@@ -20,9 +20,9 @@ module.exports = {
         modules: ['node_modules']
     },
     compilers: {
-        less: {
-            compress: prod
-        },
+        // less: {
+        //     compress: prod
+        // },
         sass: {
             outputStyle: 'compressed'
         },
@@ -48,7 +48,7 @@ module.exports = {
 if (prod) {
 
     // 压缩sass
-    // module.exports.compilers['sass'] = {outputStyle: 'compressed'}
+    module.exports.compilers['sass'] = { outputStyle: 'compressed' }
 
     // 压缩js
     module.exports.plugins = {

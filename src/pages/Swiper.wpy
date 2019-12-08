@@ -1,0 +1,148 @@
+<!--
+ * @Author: LiangJQ
+ * @Date: 2019-10-28 17:16:07
+ * @Description: 
+ -->
+<template>
+    <view class="page_wrap">
+        <view>
+            涉及内容：数据遍历，数据绑定，图片路径，事件绑定，全局js的调用，Get请求，失败弹窗，页面跳转
+            <view>1、验证是否登录，验证通过再去请求轮播图的数据</view>
+            <view>2、拿到请求回来的数据，赋值，然后遍历循环虚拟dom节点</view>
+            <view>3、点击轮播图的图片，跳转到别的页面</view>
+        </view>
+        <view class="swiper_box">
+            <swiper autoplay="true" circular="true" interval="2000" duration="500" class="swiper_list" @change="swiperChange">
+                <block wx:for="{{swiperList}}" wx:key="ind">
+                    <swiper-item class="swiper_item" @tap="JumpFun('{{item}}')">
+                        <!-- <image src="{{PHOTO_PATH + item.iconPath}}" mode="aspectFit" lazy-load="false" class="slide-image" />-->
+                        <image src="/images/{{item.iconPath}}" mode="aspectFit" lazy-load="false" class="slide-image" />
+                    </swiper-item>
+                </block>
+            </swiper>
+            <!-- 这里自定义轮播图指标下标 -->
+            <view class="indication g_display_flex">
+                <block wx:for="{{swiperList}}" wx:for-index="ind">
+                    <view class="spot {{ind == currentIndex? 'active' : ''}}"></view>
+                </block>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import {
+        PHOTO_PATH
+    } from '@/utils/config' //获取图片域名 
+    import {
+        _swiperList
+    } from '@/utils/staticData' //获取静态数据
+    import api from '@/service/index.js' //获取请求的接口
+    import checkLogin from '@/mixins/checkLogin' //检验是否已登录
+    export default class Swiper extends wepy.page {
+        config = {
+            navigationBarTitleText: '轮播图'
+        }
+        mixins = [checkLogin]
+        components = {}
+        data = {
+            /** 图片前缀地址 */
+            PHOTO_PATH,
+            /** 用户信息 */
+            userInfo: {
+                userTel: "", //用户号码
+                avatarUrl: '', //用户头像
+            },
+            currentIndex: 0, //
+            swiperList: [],
+        }
+        onShow() {}
+        methods = {
+            init() {
+                // debugger
+                console.log(this)
+                console.log(_swiperList)
+                // api.index.getSwiper({}).then((result)=>{
+                //     if(result.code === '0'){
+                //         //接口请求成功的回调函数
+                this.swiperList = _swiperList
+                //     }
+                // })
+                console.log(this.swiperList)
+            },
+            /**
+             * @description: 轮播图切换触发事件
+             */
+            swiperChange(e) {
+                this.currentIndex = e.detail.current
+            },
+            JumpFun(params) {
+                let url = params.linePath
+                this.$navigate({
+                    url
+                });
+                console.log(params)
+            }
+        }
+        events = {
+        }
+        onLoad() {
+            // this.swiperList = _swiperList
+            /** 检测用户是否登录 */
+            // let res = await this.checkLogin();
+            // if (res) {
+            //     //用户登录后执行的方法
+            //     this.userInfo = wx.getStorageSync('userInfo') || {};
+            //     let tel = this.userInfo.userTel;
+            console.log(this)
+            this.methods.init.call(this);
+            //     console.log(this.userInfo)
+            // }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .swiper_box {
+        margin: 0 32rpx;
+        position: relative;
+        .swiper_list {
+            margin: 0 auto;
+            width: 686rpx;
+            height: 260rpx;
+            .swiper_item {
+                .slide-image {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        /* 自定义轮播指示点样式 */
+        .indication {
+            width: 100%;
+            height: 36rpx;
+            position: absolute;
+            bottom: 0;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            /* 未选中指示点样式 */
+            .spot {
+                width: 8rpx;
+                height: 8rpx;
+                border-radius: 50%;
+                margin-right: 10rpx;
+                background-color: #d4ccc9;
+                /*选中指示样式 */
+                &.active {
+                    width: 22rpx;
+                    height: 8rpx;
+                    border-radius: 6rpx;
+                    background-color: #fbb634;
+                }
+            }
+        }
+    }
+</style>

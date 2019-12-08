@@ -15,6 +15,7 @@
         'pages/Index', //主页
         'pages/My', //我的
         'pages/Service', //服务
+        'pages/Swiper'
       ],
       //分包页面路由配置
       subPackages: [{
@@ -28,7 +29,7 @@
           root: 'pages/other',
           pages: [
             'Form', // 表单页
-            'echartPage' //echart
+            'EchartPage' //echart
           ]
         },
       ],
@@ -36,7 +37,7 @@
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: 'WeChat',
+        navigationBarTitleText: 'wepy-小程序demo',
         navigationBarTextStyle: 'black'
       },
       //底部 tab 栏的表现
@@ -52,7 +53,7 @@
             text: "首页"
           },
           {
-            pagePath: 'pages/Service',
+            pagePath: 'pages/Swiper',
             iconPath: "images/base/service.png",
             selectedIconPath: "images/base/services.png",
             text: "服务"
@@ -65,28 +66,71 @@
           }
         ]
       },
+      //需要跳转的小程序列表
+      navigateToMiniProgramAppIdList: ['wx1111111111111111', 'wx22222222222222', 'wx33333333333333']
+       
     }
     globalData = {
       userInfo: null
     }
     constructor() {
       super()
+      //解决了同时发起多个request时候的异常修复
+      //官方说明 https://github.com/Tencent/wepy/wiki/wepy%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8async-await
       this.use('requestfix')
+      //开启promise await async等功能的必需代码  
+      //官方说明 https://github.com/Tencent/wepy/wiki/wepy%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8Promise
+      this.use('promisify');
     }
     onLaunch() {
-      this.testAsync()
+      //检查更新版本
+      this.checkUpdateVersion();
+      //this.testAsync()
     }
-    sleep(s) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve('promise resolved')
-        }, s * 1000)
-      })
-    }
-    async testAsync() {
-      const data = await this.sleep(3)
-      console.log(data)
-    }
+    checkUpdateVersion() {
+            //判断微信版本是否 兼容小程序更新机制API的使用
+            if (wx.canIUse('getUpdateManager')) {
+                //创建 UpdateManager 实例
+                const updateManager = wx.getUpdateManager();
+                console.log('是否进入模拟更新');
+                //检测版本更新
+                updateManager.onCheckForUpdate(function(res) {
+                    console.log('是否获取版本');
+                    // 请求完新版本信息的回调
+                    if (res.hasUpdate) {
+                        //监听小程序有版本更新事件
+                        updateManager.onUpdateReady(function() {
+                            //TODO 新的版本已经下载好，调用 applyUpdate 应用新版本并重启 （此处进行了自动更新操作）
+                            updateManager.applyUpdate();
+                        })
+                        updateManager.onUpdateFailed(function() {
+                            // 新版本下载失败
+                            wx.showModal({
+                                title: '已经有新版本喽~',
+                                content: '请您删除当前小程序，到微信 “发现-小程序” 页，重新搜索打开哦~',
+                            })
+                        })
+                    }
+                })
+            } else {
+                //TODO 此时微信版本太低（一般而言版本都是支持的）
+                // wx.showModal({
+                //     title: '溫馨提示',
+                //     content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+                // })
+            }
+        }
+    // sleep(s) {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       resolve('promise resolved')
+    //     }, s * 1000)
+    //   })
+    // }
+    // async testAsync() {
+    //   const data = await this.sleep(3)
+    //   console.log(data)
+    // }
     getUserInfo(cb) {
       const that = this
       if (this.globalData.userInfo) {
@@ -102,13 +146,6 @@
   }
 </script>
 
-<style lang="less">
-  .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
+<style lang="scss">
+   @import "./css/base.scss";
 </style>
